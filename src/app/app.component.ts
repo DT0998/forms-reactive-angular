@@ -25,14 +25,35 @@ export class AppComponent implements OnInit {
           Validators.required,
           this.forbiddenNames.bind(this),
         ]),
-        email: new FormControl(null, [Validators.required, Validators.email],this.forbiddenEmails.bind(this)),
+        email: new FormControl(
+          null,
+          [Validators.required, Validators.email],
+          this.forbiddenEmails.bind(this)
+        ),
       }),
       gender: new FormControl('male'),
       hobbies: new FormArray([]),
     });
+    this.signupForm.statusChanges.subscribe((status) => console.log(status));
+    this.signupForm.setValue({
+      userData: {
+        username: 'Max',
+        email: 'max@test.com',
+      },
+      gender: 'male',
+      hobbies: [],
+    });
+    this.signupForm.patchValue({
+      userData: {
+        username: 'Anna',
+      },
+    });
   }
   onSubmit() {
     console.log(this.signupForm);
+    this.signupForm.reset({
+      gender: 'male',
+    });
   }
   onAddHobby() {
     const control = new FormControl(null, Validators.required);
